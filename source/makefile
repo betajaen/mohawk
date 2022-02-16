@@ -1,23 +1,23 @@
-OBJS = main.o mohawk.o
+OBJS = main.o game.o
 NAME = mohawk
 
 # ============================
 
-CC = m68k-amigaos-gcc
+CXX = m68k-amigaos-gcc
 RM = rm
-CCFLAGS = -Wall -nostdlib -noixemul -fomit-frame-pointer -fno-tree-loop-distribution -flto -fwhole-program -fno-exceptions
-LDFLAGS = -noixemul -fbaserel
+CXXFLAGS = -noixemul -fno-exceptions -fno-rtti
+LDFLAGS = -noixemul -fno-exceptions -Os
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	${CC} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -o $@ ${OBJS}
+	${CXX} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -o $@ ${OBJS}
 
 .cpp.o:
-	${CC} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -c $<
+	${CXX} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -c $<
 
 .c.o:
-	${CC} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -c $<
+	${CXX} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -c $<
 
 clean:
 	rm -rf *.o ${NAME}
