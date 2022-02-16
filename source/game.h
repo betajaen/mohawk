@@ -4,6 +4,7 @@
 #include <exec/types.h>
 #include <proto/intuition.h>
 #include <proto/graphics.h>
+#include <proto/datatypes.h>
 
 namespace Mohawk
 {
@@ -17,8 +18,15 @@ namespace Mohawk
 		bool Setup();
 		void Run();
 
+		void PrintF(const char* fmt, ...);
+		void PasteImageFromFile(const char* path);
+
 	private:
 
+		void InputLoop();
+
+		bool mIsRunning;
+		BPTR  mOutput;
 		struct Screen* mScreen;
 		struct Window* mWindow;
 		struct ScreenBuffer* mScreenBuffer;
