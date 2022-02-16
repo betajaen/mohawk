@@ -12,20 +12,36 @@
 
 #include "game.h"
 
-#define WIDTH  640
-#define HEIGHT 512
-#define DEPTH  24
+#define SCREEN_WIDTH  640
+#define SCREEN_HEIGHT 512
+#define SCREEN_DEPTH  24
+
+#define GAME_WIDTH 544
+#define GAME_HEIGHT 333
 
 namespace Mohawk
 {
 	Game::Game()
-		: mScreen(NULL)
+		: mScreen(NULL),
+		  mWindow(NULL)
 	{
 
 	}
 
 	Game::~Game()
 	{
+		if (mScreenBuffer && mScreen)
+		{
+			FreeScreenBuffer(mScreen, mScreenBuffer);
+			mScreenBuffer = NULL;
+		}
+
+		if (mWindow)
+		{
+			CloseWindow(mWindow);
+			mWindow = NULL;
+		}
+
 		if (mScreen)
 		{
 			CloseScreen(mScreen);
@@ -37,9 +53,9 @@ namespace Mohawk
 	{
 
 		ULONG modeId = BestCModeIDTags(
-			CYBRBIDTG_NominalWidth, WIDTH,
-			CYBRBIDTG_NominalHeight, HEIGHT,
-			CYBRBIDTG_Depth, DEPTH,
+			CYBRBIDTG_NominalWidth, SCREEN_WIDTH,
+			CYBRBIDTG_NominalHeight, SCREEN_HEIGHT,
+			CYBRBIDTG_Depth, SCREEN_DEPTH,
 			TAG_DONE
 		);
 
@@ -53,20 +69,62 @@ namespace Mohawk
 			SA_DisplayID, modeId,
 			SA_Left, 0,
 			SA_Top, 0,
-			SA_Width, WIDTH,
-			SA_Height, HEIGHT,
-			SA_Depth, DEPTH,
-			SA_Title, (unsigned int)"Mohawk",
-			SA_Type, PUBLICSCREEN,
+			SA_Width, SCREEN_WIDTH,
+			SA_Height, SCREEN_HEIGHT,
+			SA_Depth, SCREEN_DEPTH,
+			SA_Title, (ULONG) "Mohawk",
+			SA_Type, CUSTOMSCREEN,
 			SA_SysFont, 1,
 			TAG_DONE
 		);
 
-		return mScreen != NULL;
+		if (mScreen == NULL)
+		{
+			return false;
+		}
+		
+		mScreenBuffer = AllocScreenBuffer(
+			mScreen,
+			NULL,
+			SB_SCREEN_BITMAP
+		);
+
+		if (mScreenBuffer == NULL)
+		{
+			return false;
+		}
+
+		InitRastPort(&mRastPort);
+		mRastPort.BitMap = mScreenBuffer->sb_BitMap;
+
+		mWindow = OpenWindowTags(NULL,
+			WA_Left, 0,
+			WA_Top, 0,
+			WA_Width, SCREEN_WIDTH,
+			WA_Height, SCREEN_HEIGHT,
+			WA_CustomScreen, (ULONG)mScreen,
+			WA_Backdrop, TRUE,
+			WA_Borderless, FALSE,
+			WA_DragBar, FALSE,
+			WA_Activate, TRUE,
+			WA_SimpleRefresh, TRUE,
+			TAG_END
+		);
+
+		if (mWindow == NULL)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	void Game::Run()
 	{
+		SetAPen(&mRastPort, 1);
+		Move(&mRastPort, 100, 100);
+		Draw(&mRastPort, 200, 150);
+
 		Delay(500);
 	}
 

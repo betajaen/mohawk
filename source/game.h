@@ -2,8 +2,8 @@
 #define GAME_H
 
 #include <exec/types.h>
-
-struct Screen;
+#include <proto/intuition.h>
+#include <proto/graphics.h>
 
 namespace Mohawk
 {
@@ -20,6 +20,9 @@ namespace Mohawk
 	private:
 
 		struct Screen* mScreen;
+		struct Window* mWindow;
+		struct ScreenBuffer* mScreenBuffer;
+		struct RastPort mRastPort;
 
 	};
 }
