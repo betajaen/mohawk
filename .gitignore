@@ -1,3 +1,5 @@
 *.o
 *.library
 .vs
+source/mohawk
+source/mohawk
