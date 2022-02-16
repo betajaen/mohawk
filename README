@@ -1,0 +1,23 @@
+# Mohawk
+
+A player to play Mohawk based games.
+
+**Note:** This file is formatted in Markdown but can be read in any Amiga text editor.
+
+## Compiling
+
+Mohawk uses the [Bebbo Amiga GCC Toolchain](https://github.com/bebbo/amiga-gcc) to compile. 
+Although this software may be compiled with a compatible Amiga C++ compiler. Make sure that the 
+tool chain is in your path, and run make on the source drawer.
+
+For example:
+
+```sh
+export PATH="/opt/amiga/bin:$PATH"
+make
+```
+
+## Running
+
+Copy the appropriate data files into the Mohawk installation drawer, and launch the Mohawk
+executable from Workbench.
