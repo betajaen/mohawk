@@ -1,4 +1,4 @@
-OBJS = main.o game.o
+OBJS = main.o crt.o game.o
 NAME = mohawk
 
 # ============================
@@ -14,7 +14,6 @@ all: ${NAME}
 ${NAME}: ${OBJS}
 	${CXX} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -o $@ ${OBJS}
 	${CP} ${NAME} ../progdir/${NAME}
-	${CP} ${NAME}.info ../progdir/${NAME}.info
 
 .cpp.o:
 	${CXX} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -c $<
