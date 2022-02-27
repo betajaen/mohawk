@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "Amiga",
+      "includePath": [
+        "${workspaceRoot}\\**",
+        "C:\\Amiga\\Dev\\NDK3.2\\Include_H\\",
+        "/opt/amiga/m68k-amigaos/ndk-include"
+      ]
+    }
+  ]
+}
