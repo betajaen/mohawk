@@ -144,7 +144,7 @@ namespace Mohawk
 	void Game::Run()
 	{
 
-		PasteImageFromFile("myst/4137.PICT");
+		PasteImageFromFile("PROGDIR:data/myst/4137.PICT");
 
 		InputLoop();
 	}
@@ -218,6 +218,9 @@ namespace Mohawk
 			(APTR) path,
 			DTA_SourceType, DTST_FILE,
 			DTA_GroupID, GID_PICTURE,
+			PDTA_Remap, TRUE,
+			PDTA_Screen, (ULONG) mScreen,
+			PDTA_DestMode, PMODE_V43,
 			TAG_DONE
 			);
 
@@ -226,6 +229,8 @@ namespace Mohawk
 			PrintF("Could not open image %s!\n", path);
 			return;
 		}
+
+		DoDTMethod(dtObj, NULL, NULL, DTM_PROCLAYOUT, NULL, TRUE);
 
 		struct BitMapHeader* bmhd;
 		UWORD width, height;
@@ -237,6 +242,7 @@ namespace Mohawk
 		{
 			width = bmhd->bmh_Width;
 			height = bmhd->bmh_Height;
+			depth = bmhd->bmh_Depth;
 		}
 
 		PrintF("Load DataType %s as %lx, Size = %ld x %ld, Depth = %ld\n", path, dtObj, (ULONG) width, (ULONG) height, (ULONG) depth);
@@ -251,7 +257,7 @@ namespace Mohawk
 
 		BltBitMapRastPort(dtBitmap, 0, 0,
 			&mRastPort, SCREEN_WIDTH / 2 - width / 2, SCREEN_HEIGHT / 2 - height / 2,
-			width, height, 0xFF);
+			width, height, 0xC0);
 
 		DisposeDTObject(dtObj);
 	}
