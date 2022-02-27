@@ -13,5 +13,6 @@
 *.pict
 *.ico
 .vs
-progdir
+progdir/data
+progdir/mohawk
 source/mohawk
